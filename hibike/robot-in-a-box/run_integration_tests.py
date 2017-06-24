@@ -9,7 +9,7 @@ import os
 import argparse
 import subprocess
 
-from .. import hibike_process
+from .. import hibike_process, hibike_message as hm
 
 
 def shell_script(text):
@@ -44,5 +44,11 @@ shell_script("""
 cd hibike/travis
 make test
 """)
-# TODO
 # Once we are done compiling, check connected sensors and their types.
+# Uncomment these lines once branch merges
+from hibike_process import get_working_serial_ports, identify_smart_sensors
+ports = get_working_serial_ports()
+sensors = identify_smart_sensors(ports)
+sensor_types = {k: hm.devices[hm.getDeviceType(v)] for (k, v) in sensors.items()}
+for (k, v) in sensor_types.items():
+   shell_script("make MONITOR_PORT={} DEVICE={}".format(k, v))
