@@ -17,8 +17,10 @@ def shell_script(text):
     Execute each line of TEXT as a shell command.
     If any command fails, an exception is thrown.
     """
-    for line in text:
-        subprocess.check_call(line, shell=True)
+    for line in text.split("\n"):
+        retcode = subprocess.call(line, shell=True)
+        if retcode != 0:
+            raise Exception("Command {} failed with retcode {}".format(line, retcode))
 
 
 parser = argparse.ArgumentParser(description="Fetch code from a PieCentral branch and run tests on it.")
