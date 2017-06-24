@@ -11,6 +11,8 @@ import subprocess
 
 import hibike_process, hibike_message as hm
 
+TESTING_DIR = "/tmp"
+
 
 def shell_script(text):
     """
@@ -30,11 +32,11 @@ args = parser.parse_args()
 shell_script("""
 sudo systemctl stop runtime.service
 """)
-if not os.path.exists("/home/ubuntu/PieCentral"):
+if not os.path.exists(os.path.join(TESTING_DIR, "PieCentral")):
     shell_script("git clone https://github.com/pioneers/PieCentral")
 
 print("Checking in branch")
-os.chdir("/home/ubuntu/PieCentral")
+os.chdir(os.path.join(TESTING_DIR, "PieCentral"))
 shell_script("""
 git checkout origin/{0}
 git fetch origin
