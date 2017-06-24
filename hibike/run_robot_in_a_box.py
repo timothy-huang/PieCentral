@@ -48,7 +48,7 @@ make test
 # Once we are done compiling, check connected sensors and their types.
 # Uncomment these lines once branch merges
 from hibike_process import get_working_serial_ports, identify_smart_sensors
-ports = get_working_serial_ports()
+ports, _ = get_working_serial_ports()
 sensors = identify_smart_sensors(ports)
 sensor_types = {k: hm.devices[hm.getDeviceType(v)] for (k, v) in sensors.items()}
 for (k, v) in sensor_types.items():
