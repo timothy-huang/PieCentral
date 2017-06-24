@@ -51,5 +51,6 @@ from hibike_process import get_working_serial_ports, identify_smart_sensors
 ports, _ = get_working_serial_ports()
 sensors = identify_smart_sensors(ports)
 sensor_types = {k: hm.devices[hm.getDeviceType(v)]["name"] for (k, v) in sensors.items()}
+os.chdir("..")
 for (k, v) in sensor_types.items():
-   shell_script("make MONITOR_PORT={} DEVICE={}".format(k, v))
+   shell_script("make upload MONITOR_PORT={} DEVICE={}".format(k, v))
