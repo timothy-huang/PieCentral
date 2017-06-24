@@ -9,7 +9,7 @@ import os
 import argparse
 import subprocess
 
-from .. import hibike_process, hibike_message as hm
+import hibike_process, hibike_message as hm
 
 
 def shell_script(text):
