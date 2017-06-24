@@ -32,11 +32,12 @@ args = parser.parse_args()
 shell_script("""
 sudo systemctl stop runtime.service
 """)
+os.chdir(TESTING_DIR)
 if not os.path.exists(os.path.join(TESTING_DIR, "PieCentral")):
     shell_script("git clone https://github.com/pioneers/PieCentral")
 
 print("Checking in branch")
-os.chdir(os.path.join(TESTING_DIR, "PieCentral"))
+os.chdir("PieCentral")
 shell_script("""
 git checkout origin/{0}
 git fetch origin
