@@ -29,21 +29,20 @@ args = parser.parse_args()
 
 shell_script("""
 sudo systemctl stop runtime.service
-cd ~
 """)
-if not os.path.exists("PieCentral"):
+if not os.path.exists("/home/ubuntu/PieCentral"):
     shell_script("git clone https://github.com/pioneers/PieCentral")
 
 print("Checking in branch")
+os.chdir("/home/ubuntu/PieCentral")
 shell_script("""
-cd PieCentral
 git checkout origin/{0}
 git fetch origin
 git reset --hard origin/{0}
 """.format(args.branch))
 print("Making Arduino modules")
+os.chdir("hibike/travis")
 shell_script("""
-cd hibike/travis
 make test
 """)
 # Once we are done compiling, check connected sensors and their types.
