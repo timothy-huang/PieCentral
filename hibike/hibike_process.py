@@ -56,25 +56,28 @@ def identify_smart_sensors(serial_conns):
     Returns:
         A map of serial port names to UIDs.
     """
-    def recv_subscription_requests(conn, queue):
+    def recv_subscription_requests(conn, uid_queue, stop_event):
         """
-        Place received subscription request UIDs from CONN into QUEUE.
+        Place received subscription request UIDs from CONN into UID_QUEUE,
+        stopping when STOP_EVENT is set.
         """
-        for packet in hm.blocking_read_generator(conn):
+        for packet in hm.blocking_read_generator(conn, stop_event):
             msg_type = packet.getmessageID()
             if msg_type == hm.messageTypes["SubscriptionResponse"]:
                 _, _, uid = hm.parse_subscription_response(packet)
-                queue.put(uid)
+                uid_queue.put(uid)
     device_map = {}
     thread_list = []
+    event_list = []
     read_queues = []
     for conn in serial_conns:
         hm.send(conn, hm.make_ping())
         curr_queue = queue.Queue()
+        curr_event = threading.Event()
         thread_list.append(threading.Thread(target=recv_subscription_requests,
-                                            args=(conn, curr_queue),
-                                            daemon=True))
+                                            args=(conn, curr_queue, curr_event)))
         read_queues.append(curr_queue)
+        event_list.append(curr_event)
     for thread in thread_list:
         thread.start()
     for (index, reader) in enumerate(read_queues):
@@ -83,6 +86,9 @@ def identify_smart_sensors(serial_conns):
             device_map[serial_conns[index].name] = uid
         except queue.Empty:
             pass
+    for (event, thread) in zip(event_list, thread_list):
+        event.set()
+        thread.join()
     return device_map
 
 def hibike_process(badThingsQueue, stateQueue, pipeFromChild):
