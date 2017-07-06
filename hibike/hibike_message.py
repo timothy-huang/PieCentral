@@ -334,11 +334,14 @@ def parse_bytes(bytes):
   return HibikeMessage(messageID, payload)
 
 
-## runs forever, yielding packets as they're parsed
-def blocking_read_generator(serial_conn):
+def blocking_read_generator(serial_conn, stop_event=None):
+  """
+  Yield packets from SERIAL_CONN, stopping if STOP_EVENT exists
+  and is set.
+  """
   zero_byte = bytes([0])
   packets_buffer = bytearray()
-  while True:
+  while stop_event is None or not stop_event.is_set():
 
     # Wait for a 0 byte to appear
     while packets_buffer.find(zero_byte) == -1:
