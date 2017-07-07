@@ -13,11 +13,12 @@ import time
 import argparse
 import struct
 
-# pylint: disable=E0401
+# pylint: disable=import-error
 import serial
 import hibike_message as hm
 
-# pylint: disable=R0915, R0912, R0914, W0612
+# pylint: disable=too-many-statements, too-many-locals, too-many-branches
+# pylint: disable=unused-variable
 def main():
     """
     Create virtual devices and send test data on them.
@@ -122,7 +123,7 @@ def main():
             value_types = [hm.PARAM_MAP[device_id][name][1] for name in write_params]
 
             write_tuples = []
-            # pylint: disable=C0200
+            # pylint: disable=consider-using-enumerate
             for index in range(len(write_params)):
                 write_tuples.append((write_params[index], write_params_and_values[index][1]))
             for new_tuple in write_tuples:

@@ -8,7 +8,7 @@ import queue
 import threading
 import time
 
-# pylint: disable=E0401
+# pylint: disable=import-error
 import hibike_message as hm
 import serial
 
@@ -95,7 +95,8 @@ def identify_smart_sensors(serial_conns):
         thread.join()
     return device_map
 
-# pylint: disable=R0912, R0913, R0914, W0613
+# pylint: disable=too-many-branches, too-many-locals
+# pylint: disable=too-many-arguments, unused-argument
 def hibike_process(bad_things_queue, state_queue, pipe_from_child):
     """
     Run the main hibike processs.

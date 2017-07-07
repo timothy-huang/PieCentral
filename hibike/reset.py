@@ -3,7 +3,7 @@
 Reset code for flashing Arduinos.
 """
 import sys
-# pylint: disable=E0401
+# pylint: disable=import-error
 import serial
 
 

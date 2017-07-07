@@ -2,7 +2,7 @@
 Create a separate Hibike process, for testing.
 """
 from multiprocessing import Process, Pipe, Queue
-# pylint: disable=E0401
+# pylint: disable=import-error
 import hibike_process
 
 class Hibike:
