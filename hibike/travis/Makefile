@@ -5,6 +5,7 @@ DEVICES := BatteryBuzzer ExampleDevice LimitSwitch LineFollower Potentiometer \
 .PHONY: install artifacts-install lint test $(DEVICES)
 
 install:
+	cd .. && pip3 install -r requirements.txt
 	cd .. && wget https://downloads.arduino.cc/arduino-1.8.1-linux64.tar.xz
 	cd .. && sudo bash setup.sh "arduino-1.8.1-linux64.tar.xz"
 
