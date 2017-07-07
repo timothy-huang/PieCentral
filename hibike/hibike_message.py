@@ -467,7 +467,7 @@ def blocking_read(serial_conn):
     packets.extend(serial_conn.read(last_message_size - received_payload))
 
     packet_list = []
-    while len(packets) > 0:
+    while packets:
         next_packet = packets[1:].find(zero_byte)
         if next_packet == -1:
             next_packet = len(packets)
