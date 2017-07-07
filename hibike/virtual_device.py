@@ -103,7 +103,7 @@ def main():
             print("Device read recieved")
             params = struct.unpack("<H", msg.get_payload())
             read_params = hm.decode_params(device_id, params)
-            read_data = 0
+            read_data = []
 
             for data_tuple in params_and_values:
                 if data_tuple[0] in read_params:
