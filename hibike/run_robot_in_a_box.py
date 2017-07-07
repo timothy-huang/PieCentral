@@ -85,7 +85,7 @@ def main():
     from hibike_process import get_working_serial_ports, identify_smart_sensors
     ports, _ = get_working_serial_ports()
     sensors = identify_smart_sensors(ports)
-    sensor_types = {k: hm.devices[hm.getDeviceType(v)]["name"] for (k, v) in sensors.items()}
+    sensor_types = {k: hm.DEVICES[hm.get_device_type(v)]["name"] for (k, v) in sensors.items()}
     os.chdir("..")
     if args.flash_sensors:
         flash_sensors(sensor_types)
