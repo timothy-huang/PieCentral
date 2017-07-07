@@ -8,8 +8,8 @@ Author: Brose Johnstone
 import os
 import argparse
 import subprocess
+from typing import Dict
 
-# pylint: disable=import-error
 import hibike_message as hm
 
 TESTING_DIR = "/tmp"
@@ -65,6 +65,30 @@ def flash_sensors(type_dict):
     for (port, sensor_type) in type_dict.items():
         shell_script("make upload MONITOR_PORT={} DEVICE={}".format(port, sensor_type))
 
+
+def compile_modules():
+    """
+    Compile all Hibike C++ files.
+
+    This assumes we are in the travis directory already.
+    """
+    shell_script("make test")
+
+
+def get_sensor_types() -> Dict[str, str]:
+    """
+    Scan serial ports for working smart sensors and their types.
+
+    Returns:
+        A map from port names to sensor types.
+    """
+    from hibike_process import get_working_serial_ports, identify_smart_sensors
+    ports = get_working_serial_ports()[0]
+    sensors = identify_smart_sensors(ports)
+    sensor_types = {k: hm.DEVICES[hm.get_device_type(v)]["name"] for (k, v) in sensors.items()}
+    del ports
+    return sensor_types
+
 def main():
     """
     Run robot in a box.
@@ -78,17 +102,17 @@ def main():
     print("Checking in branch")
     os.chdir("PieCentral")
     check_in_branch(args.branch)
-    print("Making Arduino modules")
-    os.chdir("hibike/travis")
-    shell_script("make test")
+    if args.flash_sensors:
+        print("Making Arduino modules")
+        os.chdir("hibike/travis")
+        compile_modules()
     # Once we are done compiling, check connected sensors and their types.
-    from hibike_process import get_working_serial_ports, identify_smart_sensors
-    ports, _ = get_working_serial_ports()
-    sensors = identify_smart_sensors(ports)
-    sensor_types = {k: hm.DEVICES[hm.get_device_type(v)]["name"] for (k, v) in sensors.items()}
+    sensor_types = get_sensor_types()
+    print(sensor_types)
     os.chdir("..")
     if args.flash_sensors:
         flash_sensors(sensor_types)
+
 
 if __name__ == "__main__":
     main()
