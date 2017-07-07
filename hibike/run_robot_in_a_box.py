@@ -57,7 +57,7 @@ def check_in_branch(branch_name):
     git reset --hard origin/{0}
     """.format(branch_name))
 
-def flash_sensors(type_dict):
+def flash_sensors(type_dict: Dict[str, str]) -> None:
     """
     Flash sensors, where the keys of TYPE_DICT specify ports,
     and the values device types.
@@ -66,7 +66,7 @@ def flash_sensors(type_dict):
         shell_script("make upload MONITOR_PORT={} DEVICE={}".format(port, sensor_type))
 
 
-def compile_modules():
+def compile_modules() -> None:
     """
     Compile all Hibike C++ files.
 
@@ -102,11 +102,7 @@ def main():
     print("Checking in branch")
     os.chdir("PieCentral")
     check_in_branch(args.branch)
-    if args.flash_sensors:
-        print("Making Arduino modules")
-        os.chdir("hibike/travis")
-        compile_modules()
-    # Once we are done compiling, check connected sensors and their types.
+    # Check connected sensors and their types
     sensor_types = get_sensor_types()
     print(sensor_types)
     os.chdir("..")
