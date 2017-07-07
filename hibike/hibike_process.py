@@ -263,7 +263,7 @@ if __name__ == "__main__":
             dev_uid = main_args[0]
             if dev_uid not in uids:
                 uids.add(dev_uid)
-                if hm.devices[hm.uid_to_device_id(dev_uid)]["name"] == "TeamFlag":
+                if hm.DEVICES[hm.uid_to_device_id(dev_uid)]["name"] == "TeamFlag":
                     set_interval_sequence([
                         make_send_write(to_child, dev_uid,
                                         [("led1", 1), ("led2", 0), ("led3", 0),
@@ -284,7 +284,7 @@ if __name__ == "__main__":
                                         [("led1", 0), ("led2", 0), ("led3", 0),
                                          ("led4", 0), ("blue", 1), ("yellow", 0)])
                         ], 0.1)
-                elif hm.devices[hm.uid_to_device_id(dev_uid)]["name"] == "YogiBear":
+                elif hm.DEVICES[hm.uid_to_device_id(dev_uid)]["name"] == "YogiBear":
                     set_interval_sequence([
                         make_send_write(to_child, dev_uid, [("duty_cycle", 0)]),
                         make_send_write(to_child, dev_uid, [("duty_cycle", 0.5)]),
@@ -294,7 +294,7 @@ if __name__ == "__main__":
                         make_send_write(to_child, dev_uid, [("duty_cycle", -1.0)]),
                         make_send_write(to_child, dev_uid, [("duty_cycle", 0)])
                         ], 0.75)
-                elif hm.devices[hm.uid_to_device_id(dev_uid)]["name"] == "ServoControl":
+                elif hm.DEVICES[hm.uid_to_device_id(dev_uid)]["name"] == "ServoControl":
                     set_interval_sequence([
                         make_send_write(to_child, dev_uid,
                                         [("servo0", 1), ("enable0", False),
