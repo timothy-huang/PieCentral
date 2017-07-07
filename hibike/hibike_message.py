@@ -388,7 +388,7 @@ def parse_bytes(msg_bytes):
     if len(msg_bytes) < 2:
         return None
     cobs_frame, message_size = struct.unpack('<BB', msg_bytes[:2])
-    if cobs_frame != 0 or len(bytes) < message_size + 2:
+    if cobs_frame != 0 or len(msg_bytes) < message_size + 2:
         return None
     message = cobs_decode(msg_bytes[2:message_size + 2])
 
