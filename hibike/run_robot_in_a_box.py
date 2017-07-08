@@ -105,7 +105,7 @@ def main():
     # Check connected sensors and their types
     sensor_types = get_sensor_types()
     print(sensor_types)
-    os.chdir("..")
+    os.chdir("hibike")
     if args.flash_sensors:
         flash_sensors(sensor_types)
 
