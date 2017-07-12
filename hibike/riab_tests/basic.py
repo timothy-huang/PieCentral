@@ -42,8 +42,12 @@ class BasicTests(unittest.TestCase):
             device_id = hm.uid_to_device_id(uid)
             params = hm.all_params_for_device_id(device_id)
             process.subscribe(uid, 1, params)
+        # We should be receiving data
         while True:
-            print(process.state_queue.get())
+            packet = process.state_queue.get()
+            if packet[0] == "device_values":
+                for uid in sensors.values():
+                    self.assertIn(uid, packet[1][0])
 
 if __name__ == "__main__":
     unittest.main()
