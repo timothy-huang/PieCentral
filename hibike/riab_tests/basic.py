@@ -1,8 +1,8 @@
 import unittest
-from ..hibike_tester import Hibike
-from ..hibike_process import identify_smart_sensors, get_working_serial_ports
-from ..hibike_message import all_params_for_device_id
-from ..run_robot_in_a_box import get_sensor_types
+from hibike_tester import Hibike
+from hibike_process import identify_smart_sensors, get_working_serial_ports
+from hibike_message import all_params_for_device_id
+from run_robot_in_a_box import get_sensor_types
 
 class BasicTests(unittest.TestCase):
     EXPECTED_SENSORS = {"/dev/ttyACM0": "ServoControl",
@@ -10,11 +10,11 @@ class BasicTests(unittest.TestCase):
                         "/dev/ttyACM1": "RFID",
                         "/dev/ttyACM3": "LimitSwitch"}
     def setUpClass(self):
-        from ..run_robot_in_a_box import stop_runtime
+        from run_robot_in_a_box import stop_runtime
         stop_runtime()
     
     def tearDownClass(self):
-        from ..run_robot_in_a_box import start_runtime
+        from run_robot_in_a_box import start_runtime
         start_runtime()
 
     def test_list_devices(self):
