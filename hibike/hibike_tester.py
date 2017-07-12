@@ -54,6 +54,10 @@ class Hibike:
         Terminate the Hibike process.
         """
         self.hibike_process.terminate()
+    
+    def __del__(self):
+        if hasattr(self, "hibike_process"):
+            self.hibike_process.terminate()
 
 
 if __name__ == '__main__':
