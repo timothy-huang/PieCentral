@@ -1,7 +1,7 @@
 import unittest
 from hibike_tester import Hibike
 from hibike_process import identify_smart_sensors, get_working_serial_ports
-from hibike_message import all_params_for_device_id
+import hibike_message as hm
 from run_robot_in_a_box import get_sensor_types
 
 class BasicTests(unittest.TestCase):
@@ -39,7 +39,8 @@ class BasicTests(unittest.TestCase):
             # Shut up sensors
             process.subscribe(uid, 0, [])
         for uid in sensors.values():
-            params = all_params_for_device_id(uid)
+            device_id = hm.uid_to_device_id(uid)
+            params = hm.all_params_for_device_id(device_id)
             process.subscribe(uid, 1, params)
         while True:
             print(process.state_queue.get())
