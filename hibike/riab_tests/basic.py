@@ -9,11 +9,13 @@ class BasicTests(unittest.TestCase):
                         "/dev/ttyACM2": "YogiBear",
                         "/dev/ttyACM1": "RFID",
                         "/dev/ttyACM3": "LimitSwitch"}
-    def setUpClass(self):
+    @classmethod
+    def setUpClass(cls):
         from run_robot_in_a_box import stop_runtime
         stop_runtime()
-    
-    def tearDownClass(self):
+
+    @classmethod 
+    def tearDownClass(cls):
         from run_robot_in_a_box import start_runtime
         start_runtime()
 
