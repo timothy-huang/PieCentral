@@ -86,7 +86,8 @@ def get_sensor_types() -> Dict[str, str]:
     ports = get_working_serial_ports()[0]
     sensors = identify_smart_sensors(ports)
     sensor_types = {k: hm.DEVICES[hm.get_device_type(v)]["name"] for (k, v) in sensors.items()}
-    del ports
+    for port in ports:
+        port.close()
     return sensor_types
 
 def main():
