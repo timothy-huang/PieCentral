@@ -12,6 +12,7 @@ import logging
 import os
 import queue
 import sched
+import subprocess
 import sys
 import threading
 from urllib.request import Request, urlopen
@@ -48,7 +49,7 @@ def send_request(endpoint, user=GITHUB_USER, token=GITHUB_TOKEN, **parameters):
         request.add_header('Authorization', 'Basic ' + credentials)
     with urlopen(request) as response:
         LOGGER.debug('Made request to: %s', endpoint)
-        return json.load(response)
+        return json.loads(response.read().decode('utf-8'))
 
 
 def localize_timestamp(utc_dt):
