@@ -29,10 +29,12 @@ class BasicTests(unittest.TestCase):
     def test_subscribe(self):
         """
         Subscribe to some devices and see what happens.
+
+        TODO: Sometimes devices don't appear in data
+        packets, and this fails the test. Fix that
+        later.
         """
-        serials, _ = get_working_serial_ports()
-        sensors = identify_smart_sensors(serials)
-        del serials
+        sensors = get_sensor_types()
 
         process = Hibike()
         for uid in sensors.values():
