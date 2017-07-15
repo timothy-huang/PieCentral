@@ -48,13 +48,13 @@ class Hibike:
         Disable all attached devices.
         """
         self.pipe_to_child.send(["disable_all", []])
-    
+
     def terminate(self):
         """
         Terminate the Hibike process.
         """
         self.hibike_process.terminate()
-    
+
     def __del__(self):
         if hasattr(self, "hibike_process"):
             self.hibike_process.terminate()
