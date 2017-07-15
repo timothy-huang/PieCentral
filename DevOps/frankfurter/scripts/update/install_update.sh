@@ -31,6 +31,7 @@ cp $PIECENTRAL_BACKUP_DIR/runtime/namedPeripherals.csv $HOME/PieCentral/runtime
 mv $TMP_DIR/resources/update.sh $HOME/bin
 mv $TMP_DIR/resources/mac.py $HOME/bin
 mv $TMP_DIR/resources/runtime.sh $HOME/bin
+mv $TMP_DIR/resources/flasher.py $HOME/bin
 
 # Configure executable permissions
 sudo chown ubuntu $HOME/bin/*
@@ -44,11 +45,14 @@ sudo chmod 644 $HOME/.bashrc
 # Update and enable services
 sudo mv $TMP_DIR/resources/runtime.service /lib/systemd/system
 sudo mv $TMP_DIR/resources/update.service /lib/systemd/system
+sudo mv $TMP_DIR/resources/flasher.service /lib/systemd/system
 sudo chmod 644 /lib/systemd/system/runtime.service
 sudo chmod 644 /lib/systemd/system/update.service
+sudo chmod 644 /lib/systemd/system/flasher.service
 sudo systemctl daemon-reload
 sudo systemctl enable runtime.service
 sudo systemctl enable update.service
+sudo systemctl enable flasher.service
 
 ln -s $HOME/PieCentral/hibike/hibikeDevices.csv $HOME/PieCentral/runtime/hibikeDevices.csv
 

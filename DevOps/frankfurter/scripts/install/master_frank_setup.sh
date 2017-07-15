@@ -34,7 +34,7 @@ sudo apt autoremove -y
 
 # Install Python packages
 sudo pip3 install -r $HOME/PieCentral/runtime/requirements.txt
-sudo pip3 install -U pyserial pyyaml python-memcached flask flask-socketio eventlet pyusb protobuf
+sudo pip3 install -U pyserial pyyaml python-memcached flask flask-socketio eventlet pyusb protobuf pytz
 
 # Install wireless dongle driver
 cd $HOME

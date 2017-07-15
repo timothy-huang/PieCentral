@@ -9,6 +9,7 @@ from base64 import b64encode
 import datetime
 import json
 import logging
+import os
 import queue
 import sched
 import sys
@@ -33,6 +34,8 @@ API_BASE_ENDPOINT = '/repos/{owner}/{repo}/'.format(owner=REPO_OWNER, repo=REPO_
 LOCAL_TZ = pytz.timezone('America/Los_Angeles')
 
 PRODUCER_INTERVAL = 300  # seconds
+
+PIECENTRAL_DIR = '/home/ubuntu/PieCentral'
 
 
 def send_request(endpoint, user=GITHUB_USER, token=GITHUB_TOKEN, **parameters):
@@ -100,7 +103,11 @@ def produce_pull_requests(scheduler, pr_queue):
 
 
 def test_branch(head_branch):
-    pass
+    script_path = os.path.join(PIECENTRAL_DIR, 'hibike', 'run_robot_in_a_box.py')
+    cmd = ['python3', script_path, head_branch, '-f']
+    process_result = subprocess.run(cmd)
+    LOGGER.info('Running {cmd} ...'.format(' '.join(cmd)))
+    LOGGER.info(process_result.stdout)
 
 
 def consume_pull_requests(pr_queue, stop_event):

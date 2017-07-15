@@ -1,0 +1,10 @@
+[Unit]
+Description=hibike automatic flasher
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/home/ubuntu/bin/flasher.py
+
+[Install]
+WantedBy=local-fs.target
