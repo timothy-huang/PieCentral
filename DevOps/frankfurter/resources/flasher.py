@@ -12,6 +12,7 @@ import logging
 import os
 import queue
 import sched
+import signal
 import subprocess
 import sys
 import threading
@@ -138,6 +139,12 @@ def terminate(consumer_thread, stop_event):
     logging.shutdown()
 
 
+def make_sigterm_handler(consumer_thread, stop_event):
+    def sigterm_handler():
+        return terminate(consumer_thread, stop_event)
+    return sigterm_handler
+
+
 def main():
     # Switch to `logging.INFO` for less noisy output
     logging.basicConfig(format='[%(asctime)s][%(levelname)s]: %(message)s',
@@ -151,6 +158,7 @@ def main():
                                        args=(pr_queue, stop_event))
     consumer_thread.start()
     atexit.register(terminate, consumer_thread, stop_event)
+    signal.signal(signal.SIGTERM, make_sigterm_handler(consumer_thread, stop_event))
 
     scheduler = sched.scheduler()
     produce_pull_requests(scheduler, pr_queue)
