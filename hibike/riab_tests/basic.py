@@ -5,10 +5,7 @@ import hibike_message as hm
 from run_robot_in_a_box import get_sensor_types
 
 class BasicTests(unittest.TestCase):
-    EXPECTED_SENSORS = {"/dev/ttyACM0": "ServoControl",
-                        "/dev/ttyACM2": "YogiBear",
-                        "/dev/ttyACM1": "RFID",
-                        "/dev/ttyACM3": "LimitSwitch"}
+    EXPECTED_SENSORS = {"ServoControl", "YogiBear", "RFID", "LimitSwitch"}
     @classmethod
     def setUpClass(cls):
         from run_robot_in_a_box import stop_runtime
@@ -23,16 +20,12 @@ class BasicTests(unittest.TestCase):
         """
         Check that the expected devices enumerate.
         """
-        sensors = get_sensor_types()
+        sensors = set(get_sensor_types().values())
         self.assertEqual(self.EXPECTED_SENSORS, sensors)
     
     def test_subscribe(self):
         """
         Subscribe to some devices and see what happens.
-
-        TODO: Sometimes devices don't appear in data
-        packets, and this fails the test. Fix that
-        later.
         """
         sensors = get_sensor_types()
 
