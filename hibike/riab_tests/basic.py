@@ -56,6 +56,8 @@ class BasicTests(unittest.TestCase):
             self.assertTrue(read,
                             "subbed but didn't receive packet from {}".format(uid))
 
+        process.terminate()
+
 
 if __name__ == "__main__":
     unittest.main()
