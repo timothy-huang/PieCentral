@@ -75,6 +75,21 @@ def compile_modules() -> None:
     shell_script("make test")
 
 
+def get_sensor_uids() -> Dict[str, int]:
+    """
+    Get a mapping from serial ports to device UIDs.
+
+    This function should be used in place of identify_smart_sensors
+    when the serial ports need to be used afterwards.
+    """
+    from hibike_process import get_working_serial_ports, identify_smart_sensors
+    ports = get_working_serial_ports()[0]
+    sensors = identify_smart_sensors(ports)
+    for port in ports:
+        port.close()
+    return sensors
+
+
 def get_sensor_types() -> Dict[str, str]:
     """
     Scan serial ports for working smart sensors and their types.
@@ -82,12 +97,8 @@ def get_sensor_types() -> Dict[str, str]:
     Returns:
         A map from port names to sensor types.
     """
-    from hibike_process import get_working_serial_ports, identify_smart_sensors
-    ports = get_working_serial_ports()[0]
-    sensors = identify_smart_sensors(ports)
+    sensors = get_sensor_uids()
     sensor_types = {k: hm.DEVICES[hm.get_device_type(v)]["name"] for (k, v) in sensors.items()}
-    for port in ports:
-        port.close()
     return sensor_types
 
 def main():
