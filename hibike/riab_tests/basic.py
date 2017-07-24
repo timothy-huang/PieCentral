@@ -1,3 +1,7 @@
+"""
+Tests for basic Hibike functionality: subscription, reads, and writes.
+"""
+
 import unittest
 import time
 from hibike_tester import Hibike
@@ -56,6 +60,7 @@ class BasicTests(unittest.TestCase):
             self.assertTrue(read,
                             "subbed but didn't receive packet from {}".format(uid))
 
+        process.disable()
         process.terminate()
 
 
