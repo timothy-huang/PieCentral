@@ -18,11 +18,6 @@ class BasicTests(unittest.TestCase):
         from run_robot_in_a_box import stop_runtime
         stop_runtime()
 
-    @classmethod
-    def tearDownClass(cls):
-        from run_robot_in_a_box import start_runtime
-        start_runtime()
-
     def test_list_devices(self):
         """
         Check that the expected devices enumerate.
