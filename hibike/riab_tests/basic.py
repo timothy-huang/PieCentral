@@ -10,7 +10,10 @@ import hibike_message as hm
 from run_robot_in_a_box import get_sensor_types, get_sensor_uids
 
 class BasicTests(unittest.TestCase):
-    EXPECTED_SENSORS = {"ServoControl", "YogiBear", "RFID", "LimitSwitch"}
+    """
+    Tests basic Hibike functionality.
+    """
+    EXPECTED_SENSORS = {"BatteryBuzzer", "ServoControl", "YogiBear", "RFID", "LimitSwitch"}
     # Check for all devices' UIDs until this many seconds.
     DEVICE_READ_TIMEOUT = 5
     @classmethod
