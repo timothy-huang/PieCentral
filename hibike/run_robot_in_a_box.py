@@ -123,7 +123,8 @@ def main():
     if args.flash_sensors:
         flash_sensors(sensor_types)
 
-    unittest.main(riab_tests.basic)
+    from riab_tests import basic
+    unittest.main(basic)
 
 
 if __name__ == "__main__":
