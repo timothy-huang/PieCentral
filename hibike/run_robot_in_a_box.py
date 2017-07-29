@@ -8,9 +8,11 @@ Author: Brose Johnstone
 import os
 import argparse
 import subprocess
+import unittest
 from typing import Dict
 
 import hibike_message as hm
+import riab_tests
 
 TESTING_DIR = "/tmp"
 
@@ -120,6 +122,8 @@ def main():
     os.chdir("hibike")
     if args.flash_sensors:
         flash_sensors(sensor_types)
+
+    unittest.main(riab_tests.basic)
 
 
 if __name__ == "__main__":
