@@ -65,7 +65,10 @@ def flash_sensors(type_dict: Dict[str, str]) -> None:
     and the values device types.
     """
     for (port, sensor_type) in type_dict.items():
-        shell_script("make upload MONITOR_PORT={} DEVICE={}".format(port, sensor_type))
+        shell_script("""
+        rm -rf bin/
+        make upload MONITOR_PORT={} DEVICE={}
+        """.format(port, sensor_type))
 
 
 def compile_modules() -> None:
