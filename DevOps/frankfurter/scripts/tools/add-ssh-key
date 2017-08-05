@@ -1,0 +1,14 @@
+#!/bin/sh
+
+USER=debian
+IP_ADDR=192.168.7.2
+KEY_FILE=~/.ssh/id_rsa
+
+if [ ! -e $KEY_FILE ]; then
+  ssh-keygen -f $KEY_FILE
+fi
+
+CMD='mkdir -p ~/.ssh'
+CMD=$CMD' && cat >> ~/.ssh/authorized_keys'
+CMD=$CMD' && chmod 644 ~/.ssh/authorized_keys'
+cat $KEY_FILE.pub | ssh -q $USER@$IP_ADDR $CMD
