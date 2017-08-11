@@ -106,7 +106,7 @@ def main():
             # Update the delay, subscription time,
             # and params, then send a subscription response
             if args.verbose:
-                print("Subscription request recieved")
+                print("Subscription request received")
             params, delay = struct.unpack("<HH", msg.get_payload())
 
             subscribed_params = hm.decode_params(device_id, params)
@@ -115,12 +115,12 @@ def main():
         if msg.get_message_id() in [hm.MESSAGE_TYPES["Ping"]]:
             # Send a subscription response
             if args.verbose:
-                print("Ping recieved")
+                print("Ping received")
             hm.send(conn, hm.make_subscription_response(device_id, subscribed_params, delay, uid))
         if msg.get_message_id() in [hm.MESSAGE_TYPES["DeviceRead"]]:
             # Send a device data with the requested param and value tuples
             if args.verbose:
-                print("Device read recieved")
+                print("Device read received")
             params = struct.unpack("<H", msg.get_payload())
             read_params = hm.decode_params(device_id, params)
             read_data = []
@@ -137,7 +137,7 @@ def main():
             # Write to requested parameters
             # and return the values of the parameters written to using a device data
             if args.verbose:
-                print("Device write recieved")
+                print("Device write received")
             write_params_and_values = hm.decode_device_write(msg, device_id)
             write_params = [param_val[0] for param_val in write_params_and_values]
             value_types = [hm.PARAM_MAP[device_id][name][1] for name in write_params]
