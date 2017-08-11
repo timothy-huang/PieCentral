@@ -25,6 +25,7 @@ def test_with_random_data(func, arg_func, kwarg_func=lambda: {}, times=5, *args,
     multiple_args = isinstance(arg_func(), tuple)
     if multiple_args:
         for _ in range(times):
+            # Put multiple arguments in
             func(*args, *arg_func(), **kwargs, **kwarg_func())
     else:
         for _ in range(times):
