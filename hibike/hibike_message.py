@@ -106,14 +106,6 @@ class HibikeMessage:
     def __repr__(self):
         return str(self)
 
-    # pylint: disable=protected-access
-    def __eq__(self, other):
-        if not isinstance(other, HibikeMessage):
-            return False
-        return self._message_id == other._message_id and\
-               self._length == other._length and\
-               self._payload == other._payload
-
 
 def get_device_type(uid):
     """
