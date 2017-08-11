@@ -34,7 +34,7 @@ def main():
     device = args.device
     port = args.port
     if args.verbose:
-        print(device, port)
+        print("Device {} on port {}".format(device, port))
     conn = serial.Serial(port, 115200)
 
     for device_num in hm.DEVICES:
