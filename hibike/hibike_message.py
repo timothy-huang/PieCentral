@@ -447,8 +447,8 @@ def blocking_read_generator(serial_conn, stop_event=threading.Event()):
                 new_packet = packets_buffer[1:].find(zero_byte) + 1
                 packets_buffer = packets_buffer[new_packet:]
             # Otherwise, there might be more incoming bytes for the current packet,
-            # so we do a blocking read and try again
-            elif not stop_event.is_set():
+            # so we do a read and try again
+            else:
                 new_bytes = serial_conn.read(max(1, serial_conn.inWaiting()))
                 packets_buffer.extend(new_bytes)
 
