@@ -25,7 +25,7 @@ def run_with_random_data(func, arg_func, kwarg_func=lambda: {}, times=5):
     """
     for _ in range(times):
         # pylint: disable=syntax-error
-        func(*args, *arg_func(), **kwargs, **kwarg_func())
+        func(*arg_func(), **kwarg_func())
 
 
 def random_uid():
