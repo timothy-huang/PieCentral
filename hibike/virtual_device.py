@@ -27,7 +27,8 @@ def main():
     parser.add_argument('-d', '--device', required=True, help='device type')
     parser.add_argument('-p', '--port', required=True, help='serial port')
     parser.add_argument('-v', '--verbose',
-                        help='print messages when sending and receiving packets')
+                        help='print messages when sending and receiving packets',
+                        action="store_true")
     args = parser.parse_args()
 
     device = args.device
