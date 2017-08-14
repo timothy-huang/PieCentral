@@ -418,9 +418,10 @@ def blocking_read_generator(serial_conn, stop_event=threading.Event()):
     serial_conn.timeout = 0
     while not stop_event.is_set():
         # Wait for a 0 byte to appear
-        while packets_buffer.find(zero_byte) == -1 and not stop_event.is_set():
+        if packets_buffer.find(zero_byte) == -1:
             new_bytes = serial_conn.read(max(1, serial_conn.inWaiting()))
             packets_buffer.extend(new_bytes)
+            continue
 
         # Truncate incomplete packets at start of buffer
         packets_buffer = packets_buffer[packets_buffer.find(zero_byte):]
