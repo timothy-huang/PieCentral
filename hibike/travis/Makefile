@@ -14,7 +14,10 @@ artifacts-install:
 lint:
 	cd .. && pylint *.py
 
-test: $(DEVICES)
+unit_tests:
+	cd .. && python3 -m unittest unit_tests/*.py
+
+test: $(DEVICES) unit_tests
 
 $(DEVICES):
 	cd .. && rm -rf ./bin
