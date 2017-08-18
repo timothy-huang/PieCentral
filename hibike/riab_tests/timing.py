@@ -74,7 +74,7 @@ def profile_end_to_end():
     """
     import cProfile
     fake_rt = FakeRuntime()
-    cProfile.runctx("fake_rt.run_for(60)", locals={"fake_rt": fake_rt})
+    cProfile.runctx("fake_rt.run_for(60)", locals={"fake_rt": fake_rt}, globals={})
 
 
 class FakeRobot(object):
