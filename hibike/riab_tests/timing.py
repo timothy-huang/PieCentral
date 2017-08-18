@@ -48,8 +48,8 @@ class FakeRuntime:
         # pylint: disable=broad-except
         except Exception as ex:
             print("Encountered exception while spawning process {}".format(ex))
-    
-    def run_for(secs):
+
+    def run_for(self, secs):
         """
         Execute for SECS seconds, and then terminate.
         """
