@@ -8,13 +8,6 @@ import time
 import unittest
 
 import hibike_message
-add_runtime_to_path()
-# pylint: disable=import-error
-import runtime
-import runtimeUtil
-from runtimeUtil import HIBIKE_COMMANDS
-import studentAPI
-
 
 def add_runtime_to_path():
     """
@@ -25,6 +18,14 @@ def add_runtime_to_path():
     parent_path = path.rstrip("hibike/riab_tests")
     runtime = os.path.join(parent_path, "runtime")
     sys.path.insert(1, runtime)
+
+
+add_runtime_to_path()
+# pylint: disable=import-error
+import runtime
+import runtimeUtil
+from runtimeUtil import HIBIKE_COMMANDS
+import studentAPI
 
 
 class FakeRuntime:
