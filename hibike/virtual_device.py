@@ -31,13 +31,13 @@ def main():
                         action="store_true")
     args = parser.parse_args()
 
-    def verbose_log(fmt_string, *args):
+    def verbose_log(fmt_string, *fmt_args):
         """
         Log a message using a formatting string if verbosity
         is enabled.
         """
         if args.verbose:
-            print(fmt_string.format(*args))
+            print(fmt_string.format(*fmt_args))
 
     device = args.device
     port = args.port
