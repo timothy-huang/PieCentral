@@ -31,10 +31,17 @@ def main():
                         action="store_true")
     args = parser.parse_args()
 
+    def verbose_log(fmt_string, *args):
+        """
+        Log a message using a formatting string if verbosity
+        is enabled.
+        """
+        if args.verbose:
+            print(fmt_string.format(*args))
+
     device = args.device
     port = args.port
-    if args.verbose:
-        print("Device {} on port {}".format(device, port))
+    verbose_log("Device {} on port {}", device, port)
     conn = serial.Serial(port, 115200)
 
     for device_num in hm.DEVICES:
@@ -95,8 +102,7 @@ def main():
                         data.append(data_tuple)
                 hm.send(conn, hm.make_device_data(device_id, data))
                 update_time = time.time()
-                if args.verbose:
-                    print("Regular data update sent from %s" % device)
+                verbose_log("Regular data update sent from {}", device)
 
         msg = hm.read(conn)
         if not msg:
@@ -105,8 +111,7 @@ def main():
         if msg.get_message_id() in [hm.MESSAGE_TYPES["SubscriptionRequest"]]:
             # Update the delay, subscription time,
             # and params, then send a subscription response
-            if args.verbose:
-                print("Subscription request received")
+            verbose_log("Subscription request received")
             params, delay = struct.unpack("<HH", msg.get_payload())
 
             subscribed_params = hm.decode_params(device_id, params)
@@ -114,13 +119,11 @@ def main():
             update_time = time.time()
         if msg.get_message_id() in [hm.MESSAGE_TYPES["Ping"]]:
             # Send a subscription response
-            if args.verbose:
-                print("Ping received")
+            verbose_log("Ping received")
             hm.send(conn, hm.make_subscription_response(device_id, subscribed_params, delay, uid))
         if msg.get_message_id() in [hm.MESSAGE_TYPES["DeviceRead"]]:
             # Send a device data with the requested param and value tuples
-            if args.verbose:
-                print("Device read received")
+            verbose_log("Device read received")
             params = struct.unpack("<H", msg.get_payload())
             read_params = hm.decode_params(device_id, params)
             read_data = []
@@ -136,8 +139,7 @@ def main():
         if msg.get_message_id() in [hm.MESSAGE_TYPES["DeviceWrite"]]:
             # Write to requested parameters
             # and return the values of the parameters written to using a device data
-            if args.verbose:
-                print("Device write received")
+            verbose_log("Device write received")
             write_params_and_values = hm.decode_device_write(msg, device_id)
             write_params = [param_val[0] for param_val in write_params_and_values]
             value_types = [hm.PARAM_MAP[device_id][name][1] for name in write_params]
