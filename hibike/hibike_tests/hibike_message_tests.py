@@ -13,7 +13,7 @@ import serial
 
 import hibike_message
 import spawn_virtual_devices
-from unit_tests.utils import run_with_random_data
+from hibike_tests.utils import run_with_random_data
 DEVICE_TYPES = list(hibike_message.DEVICES)
 
 
