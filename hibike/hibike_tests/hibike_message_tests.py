@@ -14,21 +14,18 @@ import serial
 import hibike_message
 import spawn_virtual_devices
 from hibike_tests.utils import run_with_random_data
+
 DEVICE_TYPES = list(hibike_message.DEVICES)
 
 
 def random_uid():
-    """
-    Generate a random UID.
-    """
+    """ Generate a random UID. """
     uid_type = random.choice(DEVICE_TYPES)
     return uid_type << 72 | random.getrandbits(72)
 
 
 def random_params(device_id):
-    """
-    Get a random sampling of parameters for a particular DEVICE_TYPE.
-    """
+    """ Get a random sampling of parameters for a particular DEVICE_TYPE. """
     all_params = hibike_message.all_params_for_device_id(device_id)
     sample_length = random.randrange(len(all_params) + 1)
     params = random.sample(all_params, sample_length)
@@ -36,9 +33,7 @@ def random_params(device_id):
 
 
 def random_values(device_id, params):
-    """
-    Generate random valid values for PARAMS.
-    """
+    """ Generate random valid values for PARAMS. """
     all_params = hibike_message.DEVICES[device_id]["params"]
     values = []
     for param in params:
@@ -54,14 +49,10 @@ def random_values(device_id, params):
 
 
 class CobsTests(unittest.TestCase):
-    """
-    Tests for COBS encoding and decoding.
-    """
+    """ Tests for COBS encoding and decoding. """
     @staticmethod
     def gen_cobs_data():
-        """
-        Generate COBS-encodable data of a random length.
-        """
+        """ Generate COBS-encodable data of a random length. """
         data_len = random.randrange(255)
         data = bytearray()
 
@@ -71,9 +62,7 @@ class CobsTests(unittest.TestCase):
         return (data, )
 
     def test_encode_decode(self):
-        """
-        Test basic functionality of cobs_encode/decode.
-        """
+        """ Test basic functionality of cobs_encode/decode. """
         def assert_encode_decode_equal(data):
             """
             Check to make sure encode(decode) is idempotent.
@@ -86,32 +75,24 @@ class CobsTests(unittest.TestCase):
 
 
 class FakeSerialPort(object):
-    """
-    A fake serial port that acts as a queue.
-    """
+    """ A fake serial port that acts as a queue. """
     def __init__(self):
         self._buf = queue.Queue()
 
     def write(self, byte_buf):
-        """
-        Write BYTE_BUF into the queue.
-        """
+        """ Write BYTE_BUF into the queue. """
         for byte in byte_buf:
             self._buf.put(byte)
 
     def read(self, length=1):
-        """
-        Read out LENGTH bytes from the queue.
-        """
+        """ Read out LENGTH bytes from the queue. """
         buf = bytearray()
         for _ in range(length):
             buf.append(self._buf.get())
         return buf
 
     def drain(self):
-        """
-        Read the contents of the queue into a bytearray.
-        """
+        """ Read the contents of the queue into a bytearray. """
         contents = bytearray()
         while not self._buf.empty():
             contents.append(self._buf.get())
@@ -119,21 +100,15 @@ class FakeSerialPort(object):
 
     @property
     def in_waiting(self):
-        """
-        The number of bytes in the queue.
-        """
+        """ The number of bytes in the queue. """
         return self._buf.qsize()
 
 
 class ParamsTests(unittest.TestCase):
-    """
-    Tests for encoding and decoding device parameters.
-    """
+    """ Tests for encoding and decoding device parameters. """
     @staticmethod
     def gen_random_device_id_and_params():
-        """
-        Generate a random device ID and set of parameters.
-        """
+        """ Generate a random device ID and set of parameters. """
         device_id = hibike_message.uid_to_device_id(random_uid())
         params = random_params(device_id)
         return (device_id, params)
@@ -158,9 +133,7 @@ class ParamsTests(unittest.TestCase):
 
 
 class ParsingTests(unittest.TestCase):
-    """
-    Tests for parsing Hibike messages.
-    """
+    """ Tests for parsing Hibike messages. """
     MESSAGE_GENERATORS = {packet_type: None for packet_type in hibike_message.MESSAGE_TYPES}
     VALUE_GENERATORS = {key: None for key in hibike_message.PARAM_TYPES}
     @classmethod
@@ -184,18 +157,14 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def encode_packet(packet):
-        """
-        Turn a HibikeMessage into an encoded packet.
-        """
+        """ Turn a HibikeMessage into an encoded packet. """
         fake_port = FakeSerialPort()
         hibike_message.send(fake_port, packet)
         return fake_port.drain()
 
     @staticmethod
     def gen_random_sub_request():
-        """
-        Generate a random subscription request packet.
-        """
+        """ Generate a random subscription request packet. """
         device_id = random.choice(DEVICE_TYPES)
         params = random_params(device_id)
         delay = random.randrange(100)
@@ -204,9 +173,7 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def gen_random_sub_response():
-        """
-        Generate a random subscription response packet.
-        """
+        """ Generate a random subscription response packet. """
         uid = random_uid()
         device_id = hibike_message.uid_to_device_id(uid)
         params = random_params(device_id)
@@ -216,9 +183,7 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def gen_random_device_read():
-        """
-        Generate a random device read packet.
-        """
+        """ Generate a random device read packet. """
         device_id = random.choice(DEVICE_TYPES)
         params = random_params(device_id)
         msg = hibike_message.make_device_read(device_id, params)
@@ -226,9 +191,7 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def gen_random_device_write():
-        """
-        Generate a random device write packet.
-        """
+        """ Generate a random device write packet. """
         device_id = random.choice(DEVICE_TYPES)
         params = random_params(device_id)
         values = random_values(device_id, params)
@@ -237,9 +200,7 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def gen_random_device_data():
-        """
-        Generate a random device data packet.
-        """
+        """ Generate a random device data packet. """
         device_id = random.choice(DEVICE_TYPES)
         params = random_params(device_id)
         values = random_values(device_id, params)
@@ -249,17 +210,13 @@ class ParsingTests(unittest.TestCase):
 
     @staticmethod
     def gen_random_heartbeat_response():
-        """
-        Generate a heartbeat response with a random ID.
-        """
+        """ Generate a heartbeat response with a random ID. """
         msg = hibike_message.make_heartbeat_response(random.randrange(256))
         return (ParsingTests.encode_packet(msg), )
 
     @staticmethod
     def gen_random_error():
-        """
-        Generate an error packet with a random error code.
-        """
+        """ Generate an error packet with a random error code. """
         msg = hibike_message.make_error(random.randrange(256))
         return (ParsingTests.encode_packet(msg), )
 
@@ -269,9 +226,7 @@ class ParsingTests(unittest.TestCase):
         packets.
         """
         def assert_parse_is_not_none(valid_packet):
-            """
-            Assert that parsing a valid packet does not result in None.
-            """
+            """ Assert that parsing a valid packet does not result in None. """
             parse_result = hibike_message.parse_bytes(valid_packet)
             self.assertIsNotNone(parse_result,
                                  "valid packet {} parsed as None".format(valid_packet))
@@ -282,13 +237,9 @@ class ParsingTests(unittest.TestCase):
                                      func, times=100)
 
     def test_parse_bad_checksum(self):
-        """
-        Packets with bad checksums should not be parsed.
-        """
+        """ Packets with bad checksums should not be parsed. """
         def screw_up_checksum(valid_packet):
-            """
-            Make the checksum of a valid packet wrong.
-            """
+            """ Make the checksum of a valid packet wrong. """
             if valid_packet[-2] < 255:
                 valid_packet[-2] += 1
             else:
@@ -296,9 +247,7 @@ class ParsingTests(unittest.TestCase):
             return valid_packet
 
         def assert_parse_is_none(invalid_packet):
-            """
-            Assert that parsing an invalid packet results in None.
-            """
+            """ Assert that parsing an invalid packet results in None. """
             parse_result = hibike_message.parse_bytes(invalid_packet)
             self.assertIsNone(parse_result,
                               "packet with bad checksum parsed: {}".format(invalid_packet))
@@ -310,9 +259,7 @@ class ParsingTests(unittest.TestCase):
                 run_with_random_data(assert_parse_is_none, wrapped_func, times=100)
 
     def test_parse_idempotence(self):
-        """
-        Check that parsing an encoded packet is idempotent.
-        """
+        """ Check that parsing an encoded packet is idempotent. """
         def assert_parse_idempotent(valid_packet):
             """
             Check that parsing and encoding VALID_PACKET results in
@@ -329,9 +276,7 @@ class ParsingTests(unittest.TestCase):
 
 
 class BlockingReadGeneratorTests(unittest.TestCase):
-    """
-    Tests for blocking_read_generator.
-    """
+    """ Tests for blocking_read_generator. """
     DUMMY_DEVICE_TYPE = "LimitSwitch"
     STOP_TIMEOUT = 2
 
@@ -359,9 +304,7 @@ class BlockingReadGeneratorTests(unittest.TestCase):
                                  "blocking_read_generator didn't stop when stop_event triggered")
 
     def test_read_device_data(self):
-        """
-        Check that DeviceData packets are received and decoded.
-        """
+        """ Check that DeviceData packets are received and decoded. """
         start_time = time.time()
         hibike_message.send(self.dummy_device,
                             hibike_message.make_subscription_request(self.dummy_dev_id,

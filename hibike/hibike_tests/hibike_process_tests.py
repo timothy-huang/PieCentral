@@ -26,9 +26,7 @@ class IdentifySmartSensorsTests(unittest.TestCase):
         self.assertListEqual(sorted(self.VIRTUAL_DEVICE_TYPES), sorted(found_types), msg)
 
     def test_detect_devices(self):
-        """
-        Test detection of valid devices.
-        """
+        """ Test detection of valid devices. """
         virtual_devices = []
         for vdev_type in self.VIRTUAL_DEVICE_TYPES:
             virtual_devices.append(serial.Serial(spawn_device(vdev_type)))
@@ -38,9 +36,7 @@ class IdentifySmartSensorsTests(unittest.TestCase):
         self.assert_all_devices_identified(found, "did not identify all sensors")
 
     def test_detect_no_devices(self):
-        """
-        Make sure that we don't detect empty serial ports as sensors.
-        """
+        """ Make sure that we don't detect empty serial ports as sensors. """
         ports = []
         for _ in range(5):
             ports.append(serial.Serial(get_virtual_ports()[1]))
