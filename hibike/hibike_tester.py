@@ -79,11 +79,31 @@ class Hibike:
             pipe_to_child.send(["write_params", [uid, params_and_values]])
         return helper
 
-    def sensor_type(dev_uid):
+    def run_commands(commands):
+        self.enumerate()
+        while True:
+            command,main_args=self.state_queue.get()
+            if command == "device_subscribed":
+                # At the beginning of the script, set prescribed actions to run continuously in intervals
+                dev_uid - main_args[0]
+                if dev_uid not in uids:
+                    uids.add(dev_uid)
+                    if self.sensor_type(dev_uid)["name"] in commands.keys:
+                        sensor_inst=commands[self.sensor_type(dev_uid)["name"]]
+                        set_interval_sequence(sensor_inst[0],sensor_inst[1])
+                    parameters = []
+                    for param in self.sensor_info(dev_uid)["params"]:
+                        parameters.append(param["name"])
+                    self.pipe_to_child.send(["subscribe_device", [dev_uid, 10, parameters]])
+            elif command == "device_values":
+                print("%10.2f, %s" % (time.time(), str(main_args)))
+
+
+    def sensor_info(dev_uid):
         """
-        Returns sensor name of device using its uid
+        Returns sensor information of device using its uid
         """
-        return hibike_process.hm.DEVICES[hm.uid_to_device_id(dev_uid)]["name"]
+        return hibike_process.hm.DEVICES[hm.uid_to_device_id(dev_uid)]
 
 
 if __name__ == '__main__':
