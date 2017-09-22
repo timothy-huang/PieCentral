@@ -8,7 +8,6 @@ import os
 import json
 import threading
 
-
 CONFIG_FILE = open(os.path.join(
     os.path.dirname(__file__), 'hibikeDevices.json'), 'r')
 DEVICES = json.load(CONFIG_FILE)
