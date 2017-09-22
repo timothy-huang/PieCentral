@@ -16,7 +16,7 @@ lint:
 	cd .. && pylint *.py
 
 unit_tests:
-	cd .. && python3 -m unittest unit_tests/*.py
+	cd .. && python3 -m unittest hibike_tests/*.py
 
 test: $(DEVICES) unit_tests
 
