@@ -8,6 +8,9 @@ class Team:
 		self.name = teamName
 		self.number = teamNumber
 
+	def __str__(self):
+		return 'Team ' + str(self.number) + ": " + str(self.name)
+
 	def sendToDriver(self, message):
 		'''
 		Uses LCM communication to send a message from the driver station
