@@ -1,4 +1,4 @@
-"""
+
 import sys
 import Goal
 
@@ -48,7 +48,27 @@ class Shepherd:
         FromDriverStation:
             Robot State (connected, disconnected, teleop, auto)
 
+def read_from_bidding(self, alliance_name, goal_name):
+
+    lookup current bid on goal 
+    lookup next value to bid on goal
+    find the previous bidder 
+    if alliance_name is the same as revious bidder or alliance_name money less than bid cost 
+        can not bid 
+    are they allowed to bid
+        check they werent the last team to bid
+        check do they have enough money
+    store current bid to old bid field 
+    store new bid into current bid field
+    give back the number that is the current bid 
+
+    self.alliances[alliance_name] 
+
+
 def main():
+    while True:
+        msg = read()
+        msg - > fn()
     shepherd = Shepherd(sys.argv[0])
     shepherd.waitGameStart()
     shepherd.autoLoop()
@@ -58,4 +78,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-"""
