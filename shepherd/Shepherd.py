@@ -4,7 +4,7 @@ import Goal
 
 class Shepherd:
 
-    def __init__(self, matchNumber):
+    def __init__(self): # Don't think we need the matchNumber here.
         '''
         Initializes all of the state needed to maintain the current status of elements on the field
         '''
@@ -14,12 +14,13 @@ class Shepherd:
         self.schedule = Web()
         self.match_timer = Timer()
         self.match_number = 1
-        teams = self.schedule.getTeams(matchNumber)
-        self.alliances= {'blue': Alliance(teams[0], teams[1]), 'gold': Alliance(teams[2], teams[3])}
+        #teams = self.schedule.getTeams(matchNumber)
+        #self.alliances = {'blue': Alliance(teams[0], teams[1]), 'gold': Alliance(teams[2], teams[3])}
+        self.alliances = {}
         self.current_stage = 0
 
         #The follwing are elements that are configured
-        specifically for the 2018 year game - Solar Scramble
+        # specifically for the 2018 year game - Solar Scramble
         self.goals = {'a': Goal(),'b': Goal(),'c': Goal(),'d': Goal(),'e': Goal()}
 
         self.blue_powerup_timers = {'a': PowerupTimer(),
@@ -35,6 +36,8 @@ class Shepherd:
         self.blue_decode_timers = PowerupTimer()
         self.gold_decode_timers = PowerupTimer()
         self.sensors = Sensors()
+        self.score = {'blue': 0, 
+                      'gold': 0}
 
         self.event_mapping = {
             "setup_match": setup_match,
@@ -47,6 +50,11 @@ class Shepherd:
             "end_match": end_match,
         }
 
+        self.scoreboard = Scoreboard(match_timer) # what even is a scoreboard
+        self.driverstation = Driverstation() # Make this into a wrapper class w/ the 4 diff driverstations?
+        # TODO: Create driverstation wrapper class
+    # UI Commands
+
     def setup_match(self, matchNumber):
         #Assuming the UI/ctrl station will provide us with a match number arg
         self.match_number = matchNumber
@@ -54,6 +62,8 @@ class Shepherd:
         self.alliances= {'blue': Alliance(teams[0], teams[1]), 'gold': Alliance(teams[2], teams[3])}
         self.current_stage = 'NONE'
         self.timer = Timer()
+        self.score = {'blue': 0, 
+                      'gold': 0}
         broadcast_status("Set up match #" + str(self.match_number))
 
     def start_auto(self):
@@ -83,6 +93,7 @@ class Shepherd:
         self.current_stage = 'NONE'
         self.set_driver_stations_mode("NONE")
         broadcast_status("Ending match")
+        self.schedule.update_scores(self.score['blue'], self.score['gold'])
         # what else do we do?
 
     def reset_match(self):
@@ -99,10 +110,28 @@ class Shepherd:
 
     def set_driver_stations_mode(self, mode):
         if mode == "AUTO":
-            
+            #self.driverstation.blue.set_mode('AUTO')
         else if mode == "TELOP":
-            
+            #self.driverstation.blue.set_mode('TELOP')
         else:
+            #self.driverstation.blue.set_mode('NONE')
+
+    # Sensors
+    def goal_scored(alliance, goal):
+        # Look up pt value, add it using modify_pts
+        goal_value = 2
+        scored_goal = goals[goal]
+        if scored_goal.alliance == alliance:
+            modify_points(alliance, scored_goal.goal_value)
+
+    # Because I think we may need a seperate method for teams' permenant
+    # goals and bidding changes
+    def modify_points(alliance, points):
+        if (alliance == 'blue' || alliance == 'gold'):
+            score[alliance] += points
+        self.scoreboard.update_scores(score['blue'], score['gold'])
+
+
 
 
     Things to receive:
@@ -136,10 +165,7 @@ class PowerupTimer:
 
 def main():
     shepherd = Shepherd()
-    while True:
-
-
-
+    #uhhh
 
 if __name__ == '__main__':
     main()
