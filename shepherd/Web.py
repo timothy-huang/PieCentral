@@ -17,7 +17,7 @@ class Web:
         self.qual_matches = self.match_schedule.get_worksheet(0)
         self.elim_matches = self.match_schedule.get_worksheet(1)
 
-    def getValueFromTitle(self, worksheet, rowNumber, columnName):
+    def get_value_from_title(self, worksheet, rowNumber, columnName):
         '''
         Helper method that returns the value of a cell specified by match number
         and column name.
@@ -33,7 +33,7 @@ class Web:
             return None
 
 
-    def getTeams(self, matchNumber, isElim = False):
+    def get_teams(self, matchNumber, isElim = False):
         '''
         Returns a list where the first two elements are Team objects 
         which correspond to the blue alliance the the next two elements are
@@ -42,23 +42,23 @@ class Web:
         INPUTS: matchNumber, isElim (toggles between qual (false) and elim (true) matches)
         '''
         ref_sheet = self.elim_matches if isElim else self.qual_matches
-        blue1 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Blue1Name'), 
-                      self.getValueFromTitle(ref_sheet, matchNumber, 'Blue1Number')))
-        blue2 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Blue2Name'), 
-                      self.getValueFromTitle(ref_sheet, matchNumber, 'Blue2Number')))
-        gold1 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Gold1Name'), 
-                      self.getValueFromTitle(ref_sheet, matchNumber, 'Gold1Number')))
-        gold2 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Gold2Name'), 
-                      self.getValueFromTitle(ref_sheet, matchNumber, 'Gold2Number')))
+        blue1 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Blue1Name'), 
+                      self.get_value_from_title(ref_sheet, matchNumber, 'Blue1Number')))
+        blue2 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Blue2Name'), 
+                      self.get_value_from_title(ref_sheet, matchNumber, 'Blue2Number')))
+        gold1 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Gold1Name'), 
+                      self.get_value_from_title(ref_sheet, matchNumber, 'Gold1Number')))
+        gold2 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Gold2Name'), 
+                      self.get_value_from_title(ref_sheet, matchNumber, 'Gold2Number')))
         if (isElim):
-            blue3 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Blue3Name'), 
-                          self.getValueFromTitle(ref_sheet, matchNumber, 'Blue3Number')))
-            gold3 = (Team(self.getValueFromTitle(ref_sheet, matchNumber, 'Gold3Name'), 
-                          self.getValueFromTitle(ref_sheet, matchNumber, 'Gold3Number')))
+            blue3 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Blue3Name'), 
+                          self.get_value_from_title(ref_sheet, matchNumber, 'Blue3Number')))
+            gold3 = (Team(self.get_value_from_title(ref_sheet, matchNumber, 'Gold3Name'), 
+                          self.get_value_from_title(ref_sheet, matchNumber, 'Gold3Number')))
 
         return [blue1, blue2, blue3, gold1, gold2, gold3] if isElim else [blue1, blue2, gold1, gold2]
 
-    def recordScore(self, matchNumber, blueScore, goldScore, isElim = False):
+    def record_score(self, matchNumber, blueScore, goldScore, isElim = False):
         '''
         Records the spreadsheet to reflect the scores of the blue and gold alliance.
         Will be called once at the end of a match

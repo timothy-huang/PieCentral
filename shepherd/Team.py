@@ -11,12 +11,12 @@ class Team:
 	def __str__(self):
 		return 'Team ' + str(self.number) + ": " + str(self.name)
 
-	def sendToDriver(self, message):
+	def send_to_driver(self, message):
 		'''
 		Uses LCM communication to send a message from the driver station
 		'''
 
-	def receiveFromDriver(self, message):
+	def recieve_from_driver(self, message):
 		'''
 		Uses LCM communication to receive a message from the driver station
 		'''
