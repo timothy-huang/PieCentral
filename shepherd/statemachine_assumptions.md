@@ -29,3 +29,4 @@
 
 ### Schedule
   - `update_scores(int blue_score, int gold_score)` should update spreadsheet with new scores.
+ 

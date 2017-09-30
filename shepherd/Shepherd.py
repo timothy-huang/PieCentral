@@ -128,7 +128,7 @@ class Shepherd:
     # goals and bidding changes
     def modify_points(alliance, points):
         if (alliance == 'blue' || alliance == 'gold'):
-            score[alliance] += points
+            score[alliance] += points 
         self.scoreboard.update_scores(score['blue'], score['gold'])
 
 

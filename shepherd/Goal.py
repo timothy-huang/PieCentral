@@ -6,7 +6,7 @@ class Goal:
         self.bid_timer = timer thread(sends to shepherd main)
         self.multiplier_timer
         self.goal_multiplier
-        self.goal_value
+        self.goal_value 
         self.price
         self.alliance = alliance_object
 
