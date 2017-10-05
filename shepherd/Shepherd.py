@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> dbc40339de7b251e8d3934e835b81747112f4ec9
 import sys
 import Goal
 
@@ -161,7 +157,6 @@ class Shepherd:
         FromDriverStation:
             Robot State (connected, disconnected, teleop, auto)
 
-<<<<<<< HEAD
 def read_from_bidding(self, alliance_name, goal_name):
 
     lookup current bid on goal 
@@ -192,7 +187,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-=======
+
 class PowerupTimer:
     def __init__(self):
         self.steal = Timer()
@@ -202,8 +197,3 @@ class PowerupTimer:
 def main():
     shepherd = Shepherd()
     #uhhh
-
-if __name__ == '__main__':
-    main()
-
->>>>>>> dbc40339de7b251e8d3934e835b81747112f4ec9
