@@ -4,7 +4,7 @@ class Timer:
     and compare it to the current system time in order to see how much time is left
     """
     def __init__(self, timer_type, goal_name=None):
-        self.active = False 
+        self.active = False
         self.timer_type = timer_type
         self.goal_name = goal_name
 
