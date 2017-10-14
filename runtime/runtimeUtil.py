@@ -51,6 +51,7 @@ class PROCESS_NAMES(Enum):
     UDP_RECEIVE_PROCESS = "udpReceiveProcess"
     HIBIKE              = "hibike"
     TCP_PROCESS         = "tcpProcess"
+    HIBIKE_STATE_MANAGER = "hibikeStateProcess"
 
 @unique
 class HIBIKE_COMMANDS(Enum):

@@ -9,6 +9,7 @@ import filecmp
 import argparse
 import inspect
 import asyncio
+import threading
 
 import stateManager
 import studentAPI
@@ -37,9 +38,8 @@ def runtime(test_name=""): # pylint: disable=too-many-statements
     emergency_stopped = False
 
     try:
-        spawn_process(PROCESS_NAMES.STATE_MANAGER, start_state_manager)
+        spawn_process(PROCESS_NAMES.HIBIKE_STATE_MANAGER, start_hibike_state_manager)
         spawn_process(PROCESS_NAMES.UDP_RECEIVE_PROCESS, start_udp_receiver)
-        spawn_process(PROCESS_NAMES.HIBIKE, start_hibike)
         control_state = "idle"
         dawn_connected = False
 
@@ -255,7 +255,7 @@ def start_tcp(bad_things_queue, state_queue, sm_pipe):
 def process_factory(bad_things_queue, state_queue, stdout_redirect=None): # pylint: disable=unused-argument
     def spawn_process_helper(process_name, helper, *args):
         pipe_to_child, pipe_from_child = multiprocessing.Pipe()
-        if process_name != PROCESS_NAMES.STATE_MANAGER:
+        if process_name != PROCESS_NAMES.HIBIKE_STATE_MANAGER:
             state_queue.put([SM_COMMANDS.ADD, [process_name, pipe_to_child]], block=True)
             pipe_from_child.recv()
         new_process = multiprocessing.Process(target=helper, name=process_name.value, args=[
@@ -372,6 +372,18 @@ def start_hibike(bad_things_queue, state_queue, pipe):
     except Exception as e:
         bad_things_queue.put(BadThing(sys.exc_info(), str(e)))
 
+def start_hibike_state_manager(bad_things_queue, state_queue, runtime_pipe):
+    state_manager_thread = threading.Thread(target=start_state_manager, name=PROCESS_NAMES.STATE_MANAGER,
+                                            args=(bad_things_queue, state_queue, runtime_pipe))
+    pipe_to_child, pipe_from_child = multiprocessing.Pipe()
+    state_queue.put([SM_COMMANDS.ADD, [PROCESS_NAMES.HIBIKE, pipe_to_child]], block=True)
+    pipe_from_child.recv()
+    hibike_thread = threading.Thread(target=start_hibike, name=PROCESS_NAMES.HIBIKE,
+                                     args=(bad_things_queue, state_queue, pipe_from_child))
+    state_manager_thread.daemon = True
+    hibike_thread.daemon = True
+    state_manager_thread.start()
+    hibike_thread.start()
 
 def ensure_is_function(tag, val):
     if inspect.iscoroutinefunction(val):
