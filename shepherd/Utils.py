@@ -8,8 +8,8 @@ class Header(Enum):
         obj._value_ = value # pylint: disable=protected-access
         return obj
 
-@unique
-class SHEPHERD_HEADER(Header): # pylint: disable=invalid-name
+@unique # pylint: disable=invalid-name
+class SHEPHERD_HEADER(Header):
     GOAL_SCORE = ()
     GOAL_BID = ()
     CODE_INPUT = ()
@@ -23,14 +23,14 @@ class SHEPHERD_HEADER(Header): # pylint: disable=invalid-name
     BID_TIMER_END = ()
     STAGE_TIMER_END = ()
 
-@unique
-class SENSOR_HEADER(Header): # pylint: disable=invalid-name
+@unique # pylint: disable=invalid-name
+class SENSOR_HEADER(Header):
     CODE_RESULT = ()
     FAILED_POWERUP = ()
     CURRENT_BID = ()
 
-@unique
-class SCOREBOARD_HEADER(Header): # pylint: disable=invalid-name
+@unique # pylint: disable=invalid-name
+class SCOREBOARD_HEADER(Header):
     SCORE = ()
     TEAMS = ()
     BID_TIMER_START = ()
