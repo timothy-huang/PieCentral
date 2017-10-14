@@ -9,7 +9,7 @@ class Header(Enum):
         return obj
 
 @unique
-class SHEPHERD_HEADER(Header):
+class SHEPHERD_HEADER(Header): # pylint: disable=invalid-name
     GOAL_SCORE = ()
     GOAL_BID = ()
     CODE_INPUT = ()
@@ -24,13 +24,13 @@ class SHEPHERD_HEADER(Header):
     STAGE_TIMER_END = ()
 
 @unique
-class SENSOR_HEADER(Header):
+class SENSOR_HEADER(Header): # pylint: disable=invalid-name
     CODE_RESULT = ()
     FAILED_POWERUP = ()
     CURRENT_BID = ()
 
 @unique
-class SCOREBOARD_HEADER(Header):
+class SCOREBOARD_HEADER(Header): # pylint: disable=invalid-name
     SCORE = ()
     TEAMS = ()
     BID_TIMER_START = ()
