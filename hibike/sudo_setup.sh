@@ -7,6 +7,7 @@ fi
 
 install_if_absent () {
     if [[ "$(dpkg-query -W -f='${Status}' "$1" 2> /dev/null | grep -c "ok installed")" != 1 ]]; then
+    	echo $1
         sudo apt-get --yes install "$1"
     fi
 }
@@ -17,7 +18,9 @@ echo "Please restart your terminals"
 
 sudo usermod -a -G dialout "$(whoami)"
 
-curl "https://downloads.arduino.cc/arduino-1.8.1-linux64.tar.xz" | sudo tar -xJf - -C /opt
+if [ $(ls /opt | grep -c "arduino-1.8.1") == 0 ]; then 
+	curl "https://downloads.arduino.cc/arduino-1.8.1-linux64.tar.xz" | sudo tar -xJf - -C /opt
+fi
 
 deps=("make" "gcc" "gcc-avr" "arduino-mk" "python3-pip")
 for dep in "${deps[@]}"; do
