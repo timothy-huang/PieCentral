@@ -10,6 +10,7 @@ import argparse
 import inspect
 import asyncio
 import threading
+import queue
 
 import stateManager
 import studentAPI
@@ -375,7 +376,7 @@ def start_hibike(bad_things_queue, state_queue, pipe):
 def start_hibike_state_manager(bad_things_queue, state_queue, runtime_pipe):
     state_manager_thread = threading.Thread(target=start_state_manager, name=PROCESS_NAMES.STATE_MANAGER,
                                             args=(bad_things_queue, state_queue, runtime_pipe))
-    pipe_to_child, pipe_from_child = multiprocessing.Pipe()
+    pipe_to_child, pipe_from_child = ThreadingPipe().pipes()
     state_queue.put([SM_COMMANDS.ADD, [PROCESS_NAMES.HIBIKE, pipe_to_child]], block=True)
     pipe_from_child.recv()
     hibike_thread = threading.Thread(target=start_hibike, name=PROCESS_NAMES.HIBIKE,
@@ -384,6 +385,27 @@ def start_hibike_state_manager(bad_things_queue, state_queue, runtime_pipe):
     hibike_thread.daemon = True
     state_manager_thread.start()
     hibike_thread.start()
+
+class ThreadingPipe:
+    def __init__(self):
+        self.queue_to_child = queue.Queue()
+        self.queue_from_child = queue.Queue()
+
+    def pipes():
+        pipe_to_child = ThreadingConnection(self.queue_to_child, self.queue_from_child)
+        pipe_from_child = ThreadingConnection(self.queue_from_child, self.queue_to_child)
+        return (pipe_to_child, pipe_from_child)
+
+    class ThreadingConnection:
+        def __init__(self, sender, receiver):
+            self.sender = sender
+            self.receiver = receiver
+
+        def send(value):
+            return sender.put(value)
+
+        def recv():
+            return receiver.get()
 
 def ensure_is_function(tag, val):
     if inspect.iscoroutinefunction(val):
