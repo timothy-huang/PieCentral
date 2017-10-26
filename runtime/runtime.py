@@ -387,6 +387,27 @@ def start_hibike_state_manager(bad_things_queue, state_queue, runtime_pipe):
     state_manager_thread.start()
     hibike_thread.start()
 
+class ThreadingPipe:
+    def __init__(self):
+        self.queue_to_child = queue.Queue()
+        self.queue_from_child = queue.Queue()
+
+    def pipes(self):
+        pipe_to_child = ThreadingConnection(self.queue_to_child, self.queue_from_child)
+        pipe_from_child = ThreadingConnection(self.queue_from_child, self.queue_to_child)
+        return (pipe_to_child, pipe_from_child)
+
+    class ThreadingConnection:
+        def __init__(self, sender, receiver):
+            self.sender = sender
+            self.receiver = receiver
+
+        def send(value):
+            return sender.put(value)
+
+        def recv():
+            return receiver.get()
+
 def ensure_is_function(tag, val):
     if inspect.iscoroutinefunction(val):
         raise RuntimeError("{} is defined with `async def` instead of `def`".format(tag))
