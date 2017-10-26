@@ -18,6 +18,7 @@ import Ansible
 import runtime_pb2
 
 from runtimeUtil import *
+from multiprocessing import dummy
 
 ALL_PROCESSES = {}
 
