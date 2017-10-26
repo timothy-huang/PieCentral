@@ -402,11 +402,11 @@ class ThreadingPipe:
             self.sender = sender
             self.receiver = receiver
 
-        def send(value):
-            return sender.put(value)
+        def send(self, value):
+            return self.sender.put(value)
 
-        def recv():
-            return receiver.get()
+        def recv(self):
+            return self.receiver.get()
 
 def ensure_is_function(tag, val):
     if inspect.iscoroutinefunction(val):
