@@ -377,7 +377,7 @@ def start_hibike(bad_things_queue, state_queue, pipe):
 def start_hibike_state_manager(bad_things_queue, state_queue, runtime_pipe):
     state_manager_thread = threading.Thread(target=start_state_manager, name=PROCESS_NAMES.STATE_MANAGER,
                                             args=(bad_things_queue, state_queue, runtime_pipe))
-    pipe_to_child, pipe_from_child = multiprocessing.dummy.Pipe()
+    pipe_to_child, pipe_from_child = ThreadingPipe().pipes()
     state_queue.put([SM_COMMANDS.ADD, [PROCESS_NAMES.HIBIKE, pipe_to_child]], block=True)
     pipe_from_child.recv()
     hibike_thread = threading.Thread(target=start_hibike, name=PROCESS_NAMES.HIBIKE,
