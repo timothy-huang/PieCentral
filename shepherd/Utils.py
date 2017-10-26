@@ -1,4 +1,4 @@
-from enum import Enum, unique, auto
+from enum import Enum, unique
 
 @unique # pylint: disable=invalid-name
 class SHEPHERD_HEADER(Enum):
@@ -25,7 +25,7 @@ class SENSOR_HEADER(Enum):
 class SCOREBOARD_HEADER(Enum):
     SCORE = "score"
     TEAMS = "teams"
-    BID_TIMER_START = "bid_timer_start
+    BID_TIMER_START = "bid_timer_start"
     BID_AMOUNT = "bid_amount"
     BID_WIN = "bid_win"
     STAGE = "stage"
